@@ -1,6 +1,7 @@
 // Retrieve tasks and nextId from localStorage
 let taskList = JSON.parse(localStorage.getItem("tasks"));
 let nextId = JSON.parse(localStorage.getItem("nextId"));
+let myModal = document.getElementById("myModal")
 
 
 // Todo: create a function to generate a unique task id
@@ -17,19 +18,16 @@ else {
 
 // Todo: create a function to create a task card
 function createTaskCard() {
-    renderTaskList();
-    console.log(taskList);
     generateTaskId();
-    console.log(nextId);
+
     const taskCard = {
         taskName: 'taskName',
         taskType: 'taskType',
         taskDueDate: '05/31/2024'
-    };
+    }
     taskList.push(taskCard);
-    JSON.stringify(localStorage.setItem('tasks', taskList));
-    JSON.stringify(localStorage.setItem('nextId', nextId));
-    console.log(taskCard);
+    localStorage.setItem("tasks", JSON.stringify(taskList));
+    localStorage.setItem("nextId", JSON.stringify(nextId));
 }
 
 // Todo: create a function to render the task list and make cards draggable
@@ -58,5 +56,6 @@ function handleDrop(event, ui) {
 
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
 $(document).ready(function () {
+    renderTaskList()
 
 });
