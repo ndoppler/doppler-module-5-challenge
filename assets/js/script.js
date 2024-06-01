@@ -82,6 +82,4 @@ $(document).ready(function () {
     renderTaskList()
 });
 
-modalFormInput.addEventListener("submit", handleAddTask);
-
-modalForm
+modalFormInput.addEventListener('click', handleAddTask);
