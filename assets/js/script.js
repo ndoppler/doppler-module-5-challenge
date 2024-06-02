@@ -35,7 +35,7 @@ function createTaskCard(task) {
     const cardDescription = $('<p>').addClass('card-text').text(task.summary);
     const cardDueDate = $('<p>').addClass('card-text').text(task.date);
     const cardDeleteBtn = $('<button>')
-        .addClass('btn btn-danger delete')
+        .addClass('btn btn-danger')
         .text('Delete')
         .attr('tasknumber', task.taskId);
     cardBody.append(cardDescription, cardDueDate, cardDeleteBtn);
@@ -103,7 +103,8 @@ function handleAddTask(event) {
 }
 // Todo: create a function to handle deleting a task
 function handleDeleteTask(event) {
-
+    event.preventDefault
+    console.log('ye')
 }
 
 // Todo: create a function to handle dropping a task into a new status lane
@@ -132,10 +133,17 @@ $(document).ready(function () {
     });
 });
 
-modalFormInput.addEventListener('click', handleAddTask);
-swimLanes.on('click', '.delete', handleDeleteTask);
-
 $('.lane').droppable({
     accept: '.draggable',
     drop: handleDrop,
   });
+
+modalFormInput.on('click','.btn-primary', handleAddTask);
+
+$(swimLanes).on('click', '.btn .btn-danger', function() {
+    console.log('yay')
+});
+
+function test(event) {
+    console.log('hey')
+}
