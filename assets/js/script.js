@@ -10,6 +10,7 @@ let taskToDo = $('#todo-cards');
 let taskInProgress = $('#in-progress-cards');
 let taskDone = $('#done-cards');
 let swimLanes = $('#swim-lanes');
+let test = $('#yes');
 
 
 // Todo: create a function to generate a unique task id
@@ -37,7 +38,9 @@ function createTaskCard(task) {
     const cardDeleteBtn = $('<button>')
         .addClass('btn btn-danger')
         .text('Delete')
-        .attr('tasknumber', task.taskId);
+        .attr('tasknumber', task.taskId,);
+    
+    
     cardBody.append(cardDescription, cardDueDate, cardDeleteBtn);
     card.append(cardHeader, cardBody);
     taskToDo.append(card);
@@ -62,6 +65,7 @@ function renderTaskList() {
             taskDone.append(createTaskCard(task));
         }
     }
+
     $('.draggable').draggable({
         zIndex: 100
           });
@@ -103,8 +107,18 @@ function handleAddTask(event) {
 }
 // Todo: create a function to handle deleting a task
 function handleDeleteTask(event) {
-    event.preventDefault
-    console.log('ye')
+    const taskList = JSON.parse(localStorage.getItem('tasks'))
+    deleteId = parseInt(event.target.getAttribute('tasknumber'),10)
+
+    for (let i=0; i<taskList.length; i++) {
+        if (taskList[i].taskId === deleteId) {
+            taskList.splice(i,1);
+            console.log(taskList)
+        }
+    }
+
+    localStorage.setItem('tasks', JSON.stringify(taskList));
+    renderTaskList();
 }
 
 // Todo: create a function to handle dropping a task into a new status lane
@@ -112,7 +126,6 @@ function handleDrop(event, ui) {
     const taskList = JSON.parse(localStorage.getItem('tasks'))
     const eventId = parseInt(ui.draggable.attr('tasknumber'),10)
     const laneStatus = event.target.id;
-    console.log(taskList)
 
     for (let i=0; i<taskList.length; i++) {
         if (taskList[i].taskId === eventId) {
@@ -122,7 +135,7 @@ function handleDrop(event, ui) {
     }
 
     localStorage.setItem('tasks', JSON.stringify(taskList));
-    renderTaskList()
+    renderTaskList();
 }
 
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
@@ -138,4 +151,5 @@ $('.lane').droppable({
     drop: handleDrop,
   });
 
-modalFormInput.addEventListener('click', handleAddTask)
+modalFormInput.addEventListener('click', handleAddTask);
+swimLanes.on('click', handleDeleteTask)
