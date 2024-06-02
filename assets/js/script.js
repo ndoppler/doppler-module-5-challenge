@@ -88,7 +88,7 @@ function handleAddTask(event) {
         title: taskName,
         date: taskDueDate,
         summary: taskDescription,
-        status: 'todo',
+        status: 'to-do',
     };
 
     taskList.push(task);
@@ -138,12 +138,4 @@ $('.lane').droppable({
     drop: handleDrop,
   });
 
-modalFormInput.on('click','.btn-primary', handleAddTask);
-
-$(swimLanes).on('click', '.btn .btn-danger', function() {
-    console.log('yay')
-});
-
-function test(event) {
-    console.log('hey')
-}
+modalFormInput.addEventListener('click', handleAddTask)
