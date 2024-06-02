@@ -49,20 +49,25 @@ function createTaskCard(task) {
 function renderTaskList() {
     let taskList = JSON.parse(localStorage.getItem('tasks')) || [];
     taskToDo.empty();
-
+    taskInProgress.empty();
+    taskDone.empty();
     for (let task of taskList) {
-        if (task.status === "todo") {
+        if (task.status === "to-do") {
             taskToDo.append(createTaskCard(task));
         }
-        else if (task.status === "inProgress") {
+        else if (task.status === "in-progress") {
             taskInProgress.append(createTaskCard(task));
         }
         else if (task.status === "done") {
             taskDone.append(createTaskCard(task));
         }
     }
-    return taskList;
-}
+    $('.draggable').draggable({
+        zIndex: 100
+          });
+        }
+    
+
 
 // Todo: create a function to handle adding a new task
 function handleAddTask(event) {
@@ -103,13 +108,34 @@ function handleDeleteTask(event) {
 
 // Todo: create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
+    const taskList = JSON.parse(localStorage.getItem('tasks'))
+    const eventId = parseInt(ui.draggable.attr('tasknumber'),10)
+    const laneStatus = event.target.id;
+    console.log(taskList)
 
+    for (let i=0; i<taskList.length; i++) {
+        if (taskList[i].taskId === eventId) {
+            taskList[i].status = laneStatus
+            console.log(taskList[i].status)
+        }
+    }
+
+    localStorage.setItem('tasks', JSON.stringify(taskList));
+    renderTaskList()
 }
 
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
 $(document).ready(function () {
     renderTaskList();
+    $(function () {
+        $(".draggable").draggable();
+    });
 });
 
 modalFormInput.addEventListener('click', handleAddTask);
 swimLanes.on('click', '.delete', handleDeleteTask);
+
+$('.lane').droppable({
+    accept: '.draggable',
+    drop: handleDrop,
+  });
