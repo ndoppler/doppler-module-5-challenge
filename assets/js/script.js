@@ -40,6 +40,19 @@ function createTaskCard(task) {
         .text('Delete')
         .attr('tasknumber', task.taskId,);
     
+    if(task.date&& task.status !== 'done') {
+        const today = dayjs();
+        const dueDate = dayjs(task.date, 'DD/MM/YYYY')
+        
+        if(today.isSame(dueDate, 'day')) {
+
+            card.addClass('bg-warning text-white');
+        }
+        else if (today.isAfter(dueDate)) {
+        card.addClass('bg-danger text-white');
+        cardDeleteBtn.addClass('bg-light border-light text-dark')
+        }
+    }
     
     cardBody.append(cardDescription, cardDueDate, cardDeleteBtn);
     card.append(cardHeader, cardBody);
